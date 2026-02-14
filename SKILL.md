@@ -108,7 +108,7 @@ Every element needs at minimum: `type`, `id`, `x`, `y`, and styling properties.
   "width": 160,
   "height": 25,
   "text": "Hello World",
-  "fontSize": 20,
+  "fontSize": 16,
   "fontFamily": 1,
   "textAlign": "center",
   "verticalAlign": "middle",
@@ -230,8 +230,8 @@ Server ^text-server
       "width": 70,
       "height": 25,
       "text": "Client",
-      "fontSize": 20,
-      "fontFamily": 2,
+      "fontSize": 16,
+      "fontFamily": 1,
       "textAlign": "center",
       "verticalAlign": "middle",
       "angle": 0,
@@ -291,8 +291,8 @@ Server ^text-server
       "width": 70,
       "height": 25,
       "text": "Server",
-      "fontSize": 20,
-      "fontFamily": 2,
+      "fontSize": 16,
+      "fontFamily": 1,
       "textAlign": "center",
       "verticalAlign": "middle",
       "angle": 0,
@@ -435,9 +435,11 @@ Also add `boundElements` to the connected shapes:
 
 | Value | Font |
 |-------|------|
-| `1` | Hand-drawn (Virgil) |
+| `1` | Hand-drawn (Virgil) — **default, always use this** |
 | `2` | Normal (Helvetica) |
 | `3` | Code (Cascadia) |
+
+**Always use `fontFamily: 1`** (Virgil) for all text unless the user explicitly requests a different font.
 
 ## Best Practices
 
@@ -465,10 +467,20 @@ Also add `boundElements` to the connected shapes:
 - **[references/element-reference.md](references/element-reference.md)** - Full property reference for all element types
 - **[references/best-practices.md](references/best-practices.md)** - Design tips, color theory, typography guidelines
 
+## Font Size Defaults
+
+| Use Case | Size |
+|----------|------|
+| Box/shape labels | `16` |
+| Arrow/connection labels | `11` |
+| Titles/headers | `20` |
+| Small annotations | `10` |
+
 ## Quick Tips
 
-1. **Use `roughness: 0`** for formal/technical diagrams, `roughness: 1` for friendly sketches
-2. **Use `fontFamily: 2`** (Helvetica) for professional look, `fontFamily: 1` (Virgil) only when casual
-3. **Consistent spacing** - 100px between major elements, 50px for related items
-4. **Color semantics** - Blue for info/input, Green for success/data, Yellow for decisions, Red for errors
-5. **Arrow conventions** - Solid for actions, Dashed for responses/async
+1. **Always use `fontFamily: 1`** (Virgil/hand-drawn) for all text
+2. **Small font sizes** — 16 for labels, 11 for annotations
+3. **Use `roughness: 1`** for the default hand-drawn sketchy look
+4. **Consistent spacing** - 100px between major elements, 50px for related items
+5. **Color semantics** - Blue for info/input, Green for success/data, Yellow for decisions, Red for errors
+6. **Arrow conventions** - Solid for actions, Dashed for responses/async
