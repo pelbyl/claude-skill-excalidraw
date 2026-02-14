@@ -1,11 +1,11 @@
 ---
 name: excalidraw
-description: Create and edit Excalidraw diagrams for Obsidian. Use when the user asks to create diagrams, flowcharts, architecture diagrams, wireframes, or any visual drawings. Outputs .excalidraw.md files compatible with the Obsidian Excalidraw plugin.
+description: Create and edit Excalidraw diagrams for Obsidian. Use when the user asks to create diagrams, flowcharts, architecture diagrams, wireframes, or any visual drawings. Outputs .md files compatible with the Obsidian Excalidraw plugin.
 ---
 
 # Excalidraw Diagram Creation for Obsidian
 
-This skill creates diagrams as `.excalidraw.md` files compatible with the Obsidian Excalidraw plugin (obsidian-excalidraw-plugin).
+This skill creates diagrams as `.md` files compatible with the Obsidian Excalidraw plugin (obsidian-excalidraw-plugin). The `.excalidraw.md` extension is unnecessary — the plugin recognizes any `.md` file with the `excalidraw-plugin: parsed` frontmatter.
 
 ## Prerequisites
 
@@ -54,7 +54,7 @@ tags: [excalidraw]
 
 ### Key Rules
 
-1. **File extension**: Always `.excalidraw.md` (NOT `.excalidraw`)
+1. **File extension**: Use `.md` (the plugin identifies Excalidraw files by frontmatter, not extension)
 2. **Frontmatter**: Must include `excalidraw-plugin: parsed`
 3. **Text Elements section**: Extract ALL text from elements and list them with their IDs. Each text block ends with ` ^<elementId>` where the ID matches the element's `id` in the JSON. Separate each text element with a blank line.
 4. **Drawing section**: Contains the full Excalidraw JSON in an uncompressed `json` code block. The plugin will compress it on next save.
@@ -181,7 +181,7 @@ Every element needs at minimum: `type`, `id`, `x`, `y`, and styling properties.
 
 ## Complete Obsidian Example
 
-Here is a minimal complete `.excalidraw.md` file with two boxes and an arrow:
+Here is a minimal complete `.md` file with two boxes and an arrow:
 
 ```markdown
 ---
@@ -461,7 +461,7 @@ Also add `boundElements` to the connected shapes:
 5. **Group related items** - Use matching `groupIds` arrays
 6. **Use the color palette** - Stick to Excalidraw's built-in colors for consistency
 7. **Text Elements section** - Always keep it in sync with text elements in the JSON
-8. **File placement** - Place `.excalidraw.md` files in the user's Obsidian vault (typically in an Excalidraw folder)
+8. **File placement** - Place `.md` files in the user's Obsidian vault (typically in an Excalidraw folder)
 
 ## Obsidian-Specific Notes
 
