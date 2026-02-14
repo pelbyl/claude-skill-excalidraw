@@ -7,6 +7,17 @@ description: Create and edit Excalidraw diagrams for Obsidian. Use when the user
 
 This skill creates diagrams as `.excalidraw.md` files compatible with the Obsidian Excalidraw plugin (obsidian-excalidraw-plugin).
 
+## Prerequisites
+
+Before using this skill, verify the Obsidian Excalidraw plugin setting:
+
+**Settings → Excalidraw → Saving → Compress Excalidraw JSON in Markdown** must be **OFF**.
+
+This skill outputs uncompressed `json` blocks. If compression is enabled, the plugin will fail to read the generated files correctly. To check:
+1. Open Obsidian Settings
+2. Go to Community Plugins → Excalidraw → Saving
+3. Ensure "Compress Excalidraw JSON in Markdown" is **disabled**
+
 ## Obsidian File Format
 
 Obsidian Excalidraw files are **markdown files** (not raw JSON). They have this structure:
