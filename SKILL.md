@@ -1,22 +1,36 @@
 ---
 name: excalidraw
-description: Create and edit Excalidraw diagrams programmatically. Use when the user asks to create diagrams, flowcharts, architecture diagrams, wireframes, or any visual drawings in Excalidraw format (.excalidraw files).
+description: Create and edit Excalidraw diagrams for Obsidian. Use when the user asks to create diagrams, flowcharts, architecture diagrams, wireframes, or any visual drawings. Outputs .excalidraw.md files compatible with the Obsidian Excalidraw plugin.
 ---
 
-# Excalidraw Diagram Creation
+# Excalidraw Diagram Creation for Obsidian
 
-This skill enables you to create beautiful, hand-drawn style diagrams in the Excalidraw JSON format.
+This skill creates diagrams as `.excalidraw.md` files compatible with the Obsidian Excalidraw plugin (obsidian-excalidraw-plugin).
 
-## File Format Overview
+## Obsidian File Format
 
-Excalidraw files (`.excalidraw`) are JSON with this structure:
+Obsidian Excalidraw files are **markdown files** (not raw JSON). They have this structure:
 
+```
+---
+
+excalidraw-plugin: parsed
+tags: [excalidraw]
+
+---
+
+# Excalidraw Data
+
+## Text Elements
+<text content> ^<elementId>
+
+## Drawing
 ```json
 {
   "type": "excalidraw",
   "version": 2,
   "source": "https://excalidraw.com",
-  "elements": [],
+  "elements": [...],
   "appState": {
     "viewBackgroundColor": "#ffffff",
     "gridSize": null
@@ -24,6 +38,32 @@ Excalidraw files (`.excalidraw`) are JSON with this structure:
   "files": {}
 }
 ```
+%%
+```
+
+### Key Rules
+
+1. **File extension**: Always `.excalidraw.md` (NOT `.excalidraw`)
+2. **Frontmatter**: Must include `excalidraw-plugin: parsed`
+3. **Text Elements section**: Extract ALL text from elements and list them with their IDs. Each text block ends with ` ^<elementId>` where the ID matches the element's `id` in the JSON. Separate each text element with a blank line.
+4. **Drawing section**: Contains the full Excalidraw JSON in an uncompressed `json` code block. The plugin will compress it on next save.
+5. **Closing**: The Drawing section ends with `%%`
+6. **Blank lines in frontmatter**: Include blank lines around `excalidraw-plugin: parsed` in frontmatter (Obsidian YAML quirk)
+
+### Text Elements Format
+
+For each `text` type element in the JSON, add an entry:
+
+```
+Text content here ^elementId
+
+Multi-line text
+second line ^anotherId
+```
+
+- The `^id` must match the element's `id` field in the JSON
+- Multi-line text stays together, with `^id` on the last line
+- Separate entries with a blank line
 
 ## Quick Start - Creating Elements
 
@@ -128,6 +168,194 @@ Every element needs at minimum: `type`, `id`, `x`, `y`, and styling properties.
 }
 ```
 
+## Complete Obsidian Example
+
+Here is a minimal complete `.excalidraw.md` file with two boxes and an arrow:
+
+```markdown
+---
+
+excalidraw-plugin: parsed
+tags: [excalidraw]
+
+---
+
+# Excalidraw Data
+
+## Text Elements
+Client ^text-client
+
+Server ^text-server
+
+## Drawing
+```json
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "type": "rectangle",
+      "id": "rect-client",
+      "x": 50,
+      "y": 100,
+      "width": 160,
+      "height": 80,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "#a5d8ff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "seed": 1001,
+      "version": 1,
+      "versionNonce": 1001,
+      "isDeleted": false,
+      "groupIds": [],
+      "boundElements": [
+        { "id": "text-client", "type": "text" },
+        { "id": "arrow-1", "type": "arrow" }
+      ],
+      "link": null,
+      "locked": false,
+      "roundness": { "type": 3 }
+    },
+    {
+      "type": "text",
+      "id": "text-client",
+      "x": 95,
+      "y": 127,
+      "width": 70,
+      "height": 25,
+      "text": "Client",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "seed": 1002,
+      "version": 1,
+      "versionNonce": 1002,
+      "isDeleted": false,
+      "groupIds": [],
+      "boundElements": null,
+      "link": null,
+      "locked": false,
+      "containerId": "rect-client",
+      "originalText": "Client",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "type": "rectangle",
+      "id": "rect-server",
+      "x": 350,
+      "y": 100,
+      "width": 160,
+      "height": 80,
+      "angle": 0,
+      "strokeColor": "#2f9e44",
+      "backgroundColor": "#b2f2bb",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "seed": 1003,
+      "version": 1,
+      "versionNonce": 1003,
+      "isDeleted": false,
+      "groupIds": [],
+      "boundElements": [
+        { "id": "text-server", "type": "text" },
+        { "id": "arrow-1", "type": "arrow" }
+      ],
+      "link": null,
+      "locked": false,
+      "roundness": { "type": 3 }
+    },
+    {
+      "type": "text",
+      "id": "text-server",
+      "x": 395,
+      "y": 127,
+      "width": 70,
+      "height": 25,
+      "text": "Server",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "angle": 0,
+      "strokeColor": "#2f9e44",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "seed": 1004,
+      "version": 1,
+      "versionNonce": 1004,
+      "isDeleted": false,
+      "groupIds": [],
+      "boundElements": null,
+      "link": null,
+      "locked": false,
+      "containerId": "rect-server",
+      "originalText": "Server",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "type": "arrow",
+      "id": "arrow-1",
+      "x": 215,
+      "y": 140,
+      "width": 130,
+      "height": 0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "seed": 1005,
+      "version": 1,
+      "versionNonce": 1005,
+      "isDeleted": false,
+      "groupIds": [],
+      "boundElements": null,
+      "link": null,
+      "locked": false,
+      "points": [[0, 0], [130, 0]],
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "startBinding": { "elementId": "rect-client", "focus": 0, "gap": 5 },
+      "endBinding": { "elementId": "rect-server", "focus": 0, "gap": 5 }
+    }
+  ],
+  "appState": {
+    "viewBackgroundColor": "#ffffff",
+    "gridSize": null
+  },
+  "files": {}
+}
+```
+%%
+```
+
 ## Element Types
 
 | Type | Use For |
@@ -219,30 +447,28 @@ Also add `boundElements` to the connected shapes:
 4. **Align elements** - Use consistent x/y coordinates for visual alignment
 5. **Group related items** - Use matching `groupIds` arrays
 6. **Use the color palette** - Stick to Excalidraw's built-in colors for consistency
+7. **Text Elements section** - Always keep it in sync with text elements in the JSON
+8. **File placement** - Place `.excalidraw.md` files in the user's Obsidian vault (typically in an Excalidraw folder)
 
-## Diagram Types You Can Create
+## Obsidian-Specific Notes
 
-| Type | Description |
-|------|-------------|
-| **Flowcharts** | Process flows, algorithms, decision trees |
-| **Sequence Diagrams** | API calls, user interactions, message flows |
-| **Architecture Diagrams** | System design, microservices, infrastructure |
-| **Mind Maps** | Brainstorming, concept mapping, idea organization |
-| **Data Flow Diagrams** | Data movement, system analysis |
-| **ERD** | Database schemas, entity relationships |
-| **Wireframes** | UI mockups, layout sketches |
+- The plugin will **auto-compress** the JSON on next save — uncompressed output is fine
+- After creating the file, the user should open it in Obsidian and switch to **Excalidraw View**
+- Embedded images use `[[wikilinks]]` in the `## Embedded Files` section
+- The `## Text Elements` section makes diagram text **searchable** in Obsidian
+- Files can be placed anywhere in the vault but are commonly in an `Excalidraw/` folder
 
 ## Reference Documentation
 
-- **[diagram-patterns.md](diagram-patterns.md)** - Professional patterns for each diagram type (flowcharts, sequence diagrams, mind maps, architecture, etc.)
-- **[examples.md](examples.md)** - Complete working JSON examples you can use as templates
-- **[element-reference.md](element-reference.md)** - Full property reference for all element types
-- **[best-practices.md](best-practices.md)** - Design tips, color theory, typography guidelines
+- **[references/diagram-patterns.md](references/diagram-patterns.md)** - Professional patterns for each diagram type
+- **[references/examples.md](references/examples.md)** - Complete working JSON examples as templates
+- **[references/element-reference.md](references/element-reference.md)** - Full property reference for all element types
+- **[references/best-practices.md](references/best-practices.md)** - Design tips, color theory, typography guidelines
 
-## Quick Tips for Beautiful Diagrams
+## Quick Tips
 
 1. **Use `roughness: 0`** for formal/technical diagrams, `roughness: 1` for friendly sketches
-2. **Use `fontFamily: 2`** (Helvetica) for professional look, `fontFamily: 1` (Virgil) only when casual look is requested
+2. **Use `fontFamily: 2`** (Helvetica) for professional look, `fontFamily: 1` (Virgil) only when casual
 3. **Consistent spacing** - 100px between major elements, 50px for related items
 4. **Color semantics** - Blue for info/input, Green for success/data, Yellow for decisions, Red for errors
 5. **Arrow conventions** - Solid for actions, Dashed for responses/async
