@@ -495,3 +495,5 @@ Also add `boundElements` to the connected shapes:
 4. **Consistent spacing** - 100px between major elements, 50px for related items
 5. **Color semantics** - Blue for info/input, Green for success/data, Yellow for decisions, Red for errors
 6. **Arrow conventions** - Solid for actions, Dashed for responses/async
+
+<!-- lazyskill update test -->
